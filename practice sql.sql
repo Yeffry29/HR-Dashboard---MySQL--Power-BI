@@ -17,7 +17,7 @@ set birthdate = case
     else null
 end;
 
-#cambiar el tipo de datos de text a date 
+#Change type of data of TEXT - DATE
 alter table hr
 modify column birthdate date ;
 
@@ -37,7 +37,7 @@ modify column hire_date date;
 
 
 -----
-#recuperar info 
+#Get back information from the original table due to  i erase the column by mistake
 
 select hr.emp_id, hrb.termdate, hr.termdate
 from hr
@@ -128,7 +128,7 @@ select count(age) from hr where age < 18;
 
 ----------------
 
-#questions 
+#Questions and analysis 
 
 #1 what is the gender breakdown of employees in the company ?
 select gender, count(*) as count
@@ -173,19 +173,19 @@ group by age_group,gender
 order by age_group,gender desc;
 ------------------
 
-#How many employees work at site vs remote?
+#4 How many employees work at site vs remote?
 select location, count(*) as count
 from hr
 where age >=18 and termdate is null
 group by location ;
 
-#what is the avg of employees who have been terminated
+#5 what is the avg of employees who have been terminated
 
 select round(avg(datediff(termdate, hire_date)))/365 as avg_length_employment
 from hr
 where termdate <= curdate() and age >=18  ;
 
-#How does the gender dirtribution vary across department and job tittle?
+#6 How does the gender dirtribution vary across department and job tittle?
 select department, gender,count(*) as count
 from hr
 where age >=18 and termdate is null
@@ -193,7 +193,7 @@ group by department, gender
 order by department;
 
 
-#what is the distribution of job tittles across the company ?
+#7 what is the distribution of job tittles across the company ?
 select jobtitle, count(*) as count
 from hr
 where age >= 18 and termdate is null
@@ -213,7 +213,7 @@ from (
     
     order by termination_rate desc;
     
-    # what is the distirbution employees across location by city and state
+    # 9 what is the distirbution employees across location by city and state
     
     select location_state, count(*)  as count
     from hr
@@ -222,7 +222,7 @@ from (
     order by count desc;
     
     
-    #how has the company employee count changed over time based on hire and term date
+    #10 how has the company employee count changed over time based on hire and term date
     
     select year, hires, terminations, hires - terminations as net_change , round((hires - terminations) / hires * 100,2) as net_change_percent
     
@@ -239,7 +239,7 @@ from (
     order by year asc;
     
     
-    # What is the tenue distribution of  each department 
+    # 11 What is the tenue distribution of  each department 
     
     select department, round(avg(datediff(termdate,hire_date)/365),0) as Avg_tenure
     from hr
